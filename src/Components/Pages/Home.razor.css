@@ -1,0 +1,252 @@
+.game-shell {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.hero {
+    text-align: center;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: 1;
+}
+
+.eyebrow {
+    margin: 0 0 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #59636e;
+}
+
+.subtitle {
+    margin: 0.75rem 0 0;
+    font-size: 1.05rem;
+    color: #59636e;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.mistakes {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.toolbar-label,
+.mistake-count,
+.selection-meta {
+    font-weight: 700;
+}
+
+.mistake-pips {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.mistake-pip {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 999px;
+    background-color: #d0d7de;
+}
+
+.mistake-pip.active {
+    background-color: #596dff;
+}
+
+.mistake-pip.spent {
+    opacity: 0.45;
+}
+
+.message {
+    border-radius: 0.9rem;
+    padding: 0.95rem 1rem;
+    font-weight: 700;
+}
+
+.message-info {
+    background-color: #eef5ff;
+    color: #134074;
+}
+
+.message-success {
+    background-color: #e8f5e9;
+    color: #0f5b2c;
+}
+
+.message-warning {
+    background-color: #fff6df;
+    color: #8a5a00;
+}
+
+.message-error {
+    background-color: #fdecec;
+    color: #8f1d1d;
+}
+
+.solved-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.group-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    color: #1f2328;
+}
+
+.group-text {
+    flex: 1;
+}
+
+.group-text h2 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+}
+
+.group-text p {
+    margin: 0;
+    font-weight: 700;
+}
+
+.level-0 {
+    background-color: #f9df6d;
+}
+
+.level-1 {
+    background-color: #a0c35a;
+}
+
+.level-2 {
+    background-color: #b2c8f4;
+}
+
+.level-3 {
+    background-color: #b485d4;
+    color: #ffffff;
+}
+
+.revealed-tag {
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.selection-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: #59636e;
+    flex-wrap: wrap;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.tile {
+    aspect-ratio: 1 / 1;
+    border: none;
+    border-radius: 1rem;
+    background-color: #efefe6;
+    box-shadow: inset 0 0 0 1px rgba(31, 35, 40, 0.08);
+    color: #1f2328;
+    padding: 0.75rem;
+    font-weight: 800;
+    font-size: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.tile:hover:enabled {
+    transform: translateY(-1px);
+    box-shadow: inset 0 0 0 1px rgba(31, 35, 40, 0.08), 0 0.5rem 1rem rgba(31, 35, 40, 0.08);
+}
+
+.tile.selected {
+    background-color: #1f2328;
+    color: #ffffff;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.primary-button,
+.secondary-button {
+    border-radius: 999px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 800;
+    border: 1px solid transparent;
+}
+
+.primary-button {
+    background-color: #1f2328;
+    color: #ffffff;
+}
+
+.secondary-button {
+    background-color: #ffffff;
+    color: #1f2328;
+    border-color: #d0d7de;
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+@media (max-width: 640px) {
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .mistakes {
+        justify-content: space-between;
+    }
+
+    .board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tile {
+        min-height: 4.75rem;
+        aspect-ratio: auto;
+    }
+
+    .group-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

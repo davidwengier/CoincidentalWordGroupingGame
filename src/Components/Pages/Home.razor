@@ -1,0 +1,116 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject PuzzleCatalog PuzzleCatalog
+
+<PageTitle>Coincidental Word Grouping Game</PageTitle>
+
+<div class="game-shell">
+    <header class="hero">
+        <p class="eyebrow">Word grouping puzzle</p>
+        <h1>Coincidental Word Grouping Game</h1>
+        <p class="subtitle">Find groups of four words that share a connection.</p>
+    </header>
+
+    <section class="toolbar" aria-label="Game status">
+        <div class="mistakes">
+            <span class="toolbar-label">Mistakes remaining</span>
+            <div class="mistake-pips" aria-hidden="true">
+                @for (var i = 0; i < WordGroupingGame.MaxMistakes; i++)
+                {
+                    <span class="mistake-pip @(i < _game.MistakesRemaining ? "active" : "spent")"></span>
+                }
+            </div>
+            <span class="mistake-count">@_game.MistakesRemaining / @WordGroupingGame.MaxMistakes</span>
+        </div>
+
+        <button type="button" class="secondary-button" @onclick="StartNewGame">New game</button>
+    </section>
+
+    <div class="message @GetMessageClass(_game.CurrentMessage.Kind)" role="status" aria-live="polite">
+        @_game.CurrentMessage.Text
+    </div>
+
+    @if (_game.RevealedGroups.Count > 0)
+    {
+        <div class="solved-groups">
+            @foreach (var group in _game.RevealedGroups)
+            {
+                <section class="group-card level-@group.Level">
+                    <div class="group-text">
+                        <h2>@group.Category</h2>
+                        <p>@string.Join(", ", group.Members)</p>
+                    </div>
+
+                    @if (!group.SolvedByPlayer)
+                    {
+                        <span class="revealed-tag">Revealed</span>
+                    }
+                </section>
+            }
+        </div>
+    }
+
+    @if (_game.RemainingTiles.Count > 0)
+    {
+        <div class="selection-meta">
+            <span>Selected: @_game.SelectedWordCount / 4</span>
+            @if (_game.IsOver)
+            {
+                <span>Start a new game to play again.</span>
+            }
+        </div>
+
+        <div class="board" aria-label="Word board">
+            @foreach (var tile in _game.RemainingTiles)
+            {
+                <button
+                    @key="tile.Id"
+                    type="button"
+                    class="tile @(_game.IsSelected(tile.Id) ? "selected" : null)"
+                    aria-pressed="@_game.IsSelected(tile.Id)"
+                    disabled="@_game.IsOver"
+                    @onclick="() => ToggleTile(tile.Id)">
+                    @tile.Word
+                </button>
+            }
+        </div>
+    }
+
+    <div class="controls">
+        <button type="button" class="secondary-button" @onclick="Shuffle" disabled="@(!_game.CanShuffle)">Shuffle</button>
+        <button type="button" class="secondary-button" @onclick="DeselectAll" disabled="@(!_game.CanClearSelection)">Deselect all</button>
+        <button type="button" class="primary-button" @onclick="SubmitGuess" disabled="@(!_game.CanSubmit)">Submit</button>
+    </div>
+</div>
+
+@code
+{
+    private WordGroupingGame _game = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        StartNewGame();
+    }
+
+    private void DeselectAll() => _game.ClearSelection();
+
+    private static string GetMessageClass(GameMessageKind kind) => kind switch
+    {
+        GameMessageKind.Success => "message-success",
+        GameMessageKind.Warning => "message-warning",
+        GameMessageKind.Error => "message-error",
+        _ => "message-info"
+    };
+
+    private void Shuffle() => _game.ShuffleRemaining();
+
+    private void StartNewGame()
+    {
+        _game = PuzzleCatalog.CreateRandomGame();
+    }
+
+    private void SubmitGuess() => _game.SubmitGuess();
+
+    private void ToggleTile(int tileId) => _game.ToggleSelection(tileId);
+}
