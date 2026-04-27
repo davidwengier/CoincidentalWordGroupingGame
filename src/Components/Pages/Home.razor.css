@@ -194,9 +194,9 @@
 
 .tile-label {
     display: block;
-    max-width: 100%;
-    font-size: 0.68rem;
-    font-size: clamp(0.32rem, calc(170cqi / var(--tile-word-length)), 0.92rem);
+    width: 100%;
+    overflow: hidden;
+    font-size: 0.92rem;
     line-height: 1;
     letter-spacing: -0.02em;
     white-space: nowrap;

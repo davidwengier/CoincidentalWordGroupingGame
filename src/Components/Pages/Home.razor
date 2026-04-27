@@ -1,5 +1,7 @@
 @page "/"
+@implements IAsyncDisposable
 @inject PuzzleCatalog PuzzleCatalog
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Coincidental Word Grouping Game</PageTitle>
 
@@ -66,7 +68,6 @@
                     @key="tile.Id"
                     type="button"
                     class="tile @(_game.IsSelected(tile.Id) ? "selected" : null)"
-                    style="--tile-word-length: @GetTileWordLength(tile.Word);"
                     aria-pressed="@_game.IsSelected(tile.Id)"
                     disabled="@_game.IsOver"
                     @onclick="() => ToggleTile(tile.Id)">
@@ -86,11 +87,26 @@
 @code
 {
     private WordGroupingGame _game = null!;
+    private IJSObjectReference? _tileLabelFitModule;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         StartNewGame();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _tileLabelFitModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/tileLabelFit.js");
+            await _tileLabelFitModule.InvokeVoidAsync("initializeTileLabelFit");
+        }
+
+        if (_tileLabelFitModule is not null)
+        {
+            await _tileLabelFitModule.InvokeVoidAsync("fitTileLabels");
+        }
     }
 
     private void DeselectAll() => _game.ClearSelection();
@@ -110,9 +126,24 @@
         _game = PuzzleCatalog.CreateRandomGame();
     }
 
-    private static int GetTileWordLength(string word) => Math.Max(word.Length, 1);
-
     private void SubmitGuess() => _game.SubmitGuess();
 
     private void ToggleTile(int tileId) => _game.ToggleSelection(tileId);
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_tileLabelFitModule is null)
+        {
+            return;
+        }
+
+        try
+        {
+            await _tileLabelFitModule.InvokeVoidAsync("disposeTileLabelFit");
+            await _tileLabelFitModule.DisposeAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+    }
 }
