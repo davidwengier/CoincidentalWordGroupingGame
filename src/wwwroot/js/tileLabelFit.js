@@ -47,12 +47,17 @@ function onWindowResize() {
 function fitTileLabel(label) {
   label.style.fontSize = "";
 
+  const canWrap = label.classList.contains("tile-label-wrap");
+  if (label.clientWidth === 0) {
+    return;
+  }
+
   const maximumFontSizePx = Number.parseFloat(window.getComputedStyle(label).fontSize);
   if (!Number.isFinite(maximumFontSizePx)) {
     return;
   }
 
-  if (label.scrollWidth <= label.clientWidth) {
+  if (labelFits(label, canWrap)) {
     return;
   }
 
@@ -64,7 +69,7 @@ function fitTileLabel(label) {
     const mid = (low + high) / 2;
     label.style.fontSize = `${mid}px`;
 
-    if (label.scrollWidth <= label.clientWidth) {
+    if (labelFits(label, canWrap)) {
       best = mid;
       low = mid;
     } else {
@@ -73,4 +78,29 @@ function fitTileLabel(label) {
   }
 
   label.style.fontSize = `${best}px`;
+}
+
+function labelFits(label, canWrap) {
+  const epsilonPx = 0.5;
+
+  if (label.scrollWidth > label.clientWidth + epsilonPx) {
+    return false;
+  }
+
+  if (!canWrap) {
+    return true;
+  }
+
+  const tile = label.closest(".tile");
+  if (!tile) {
+    return true;
+  }
+
+  const tileStyle = window.getComputedStyle(tile);
+  const availableHeight =
+    tile.clientHeight -
+    Number.parseFloat(tileStyle.paddingTop) -
+    Number.parseFloat(tileStyle.paddingBottom);
+
+  return label.getBoundingClientRect().height <= availableHeight + epsilonPx;
 }

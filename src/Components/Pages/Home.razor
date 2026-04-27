@@ -71,7 +71,7 @@
                     aria-pressed="@_game.IsSelected(tile.Id)"
                     disabled="@_game.IsOver"
                     @onclick="() => ToggleTile(tile.Id)">
-                    <span class="tile-label">@tile.Word</span>
+                    <span class="tile-label @(CanWrapTileWord(tile.Word) ? "tile-label-wrap" : null)">@tile.Word</span>
                 </button>
             }
         </div>
@@ -125,6 +125,8 @@
     {
         _game = PuzzleCatalog.CreateRandomGame();
     }
+
+    private static bool CanWrapTileWord(string word) => word.Contains(' ', StringComparison.Ordinal);
 
     private void SubmitGuess() => _game.SubmitGuess();
 
