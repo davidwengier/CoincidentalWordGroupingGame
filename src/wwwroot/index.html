@@ -6,6 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coincidental Word Grouping Game</title>
     <base href="/" />
+    <script>
+        (() => {
+            const storageKey = "theme";
+            const darkTheme = "dark";
+            const lightTheme = "light";
+            const storedTheme = localStorage.getItem(storageKey);
+            const theme =
+                storedTheme === darkTheme || storedTheme === lightTheme
+                    ? storedTheme
+                    : (window.matchMedia("(prefers-color-scheme: dark)").matches ? darkTheme : lightTheme);
+
+            document.documentElement.dataset.theme = theme;
+            document.documentElement.style.colorScheme = theme;
+        })();
+    </script>
     <link rel="preload" id="webassembly" />
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="app.css" />

@@ -1,6 +1,22 @@
 ﻿@inherits LayoutComponentBase
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
 
 <div class="page">
+    <header class="top-row">
+        <button
+            type="button"
+            class="theme-toggle"
+            aria-label="Dark mode"
+            aria-pressed="@_isDarkMode"
+            disabled="@(_themeModule is null)"
+            @onclick="ToggleThemeAsync">
+            <span class="theme-toggle-icon" aria-hidden="true">@(_isDarkMode ? "🌙" : "☀️")</span>
+            <span>Dark mode</span>
+            <span class="theme-toggle-state">@(_isDarkMode ? "On" : "Off")</span>
+        </button>
+    </header>
+
     <main>
         <article class="content px-4">
             @Body
@@ -13,3 +29,47 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code
+{
+    private IJSObjectReference? _themeModule;
+    private bool _isDarkMode;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        _themeModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/theme.js");
+        _isDarkMode = await _themeModule.InvokeAsync<bool>("initializeTheme");
+        StateHasChanged();
+    }
+
+    private async Task ToggleThemeAsync()
+    {
+        if (_themeModule is null)
+        {
+            return;
+        }
+
+        _isDarkMode = await _themeModule.InvokeAsync<bool>("toggleTheme");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_themeModule is null)
+        {
+            return;
+        }
+
+        try
+        {
+            await _themeModule.DisposeAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+    }
+}

@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    color: var(--text-primary);
 }
 
 .hero {
@@ -24,13 +25,13 @@
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #59636e;
+    color: var(--text-secondary);
 }
 
 .subtitle {
     margin: 0.5rem 0 0;
     font-size: 1rem;
-    color: #59636e;
+    color: var(--text-secondary);
 }
 
 .toolbar {
@@ -63,11 +64,11 @@
     width: 0.9rem;
     height: 0.9rem;
     border-radius: 999px;
-    background-color: #d0d7de;
+    background-color: var(--border-subtle);
 }
 
 .mistake-pip.active {
-    background-color: #596dff;
+    background-color: var(--accent);
 }
 
 .mistake-pip.spent {
@@ -81,23 +82,23 @@
 }
 
 .message-info {
-    background-color: #eef5ff;
-    color: #134074;
+    background-color: var(--message-info-background);
+    color: var(--message-info-text);
 }
 
 .message-success {
-    background-color: #e8f5e9;
-    color: #0f5b2c;
+    background-color: var(--message-success-background);
+    color: var(--message-success-text);
 }
 
 .message-warning {
-    background-color: #fff6df;
-    color: #8a5a00;
+    background-color: var(--message-warning-background);
+    color: var(--message-warning-text);
 }
 
 .message-error {
-    background-color: #fdecec;
-    color: #8f1d1d;
+    background-color: var(--message-error-background);
+    color: var(--message-error-text);
 }
 
 .solved-groups {
@@ -113,7 +114,8 @@
     gap: 0.75rem;
     border-radius: 1rem;
     padding: 0.85rem 1rem;
-    color: #1f2328;
+    color: var(--text-primary);
+    box-shadow: 0 0.75rem 1.5rem -1rem var(--shadow-color);
 }
 
 .group-text {
@@ -162,7 +164,7 @@
     justify-content: space-between;
     gap: 1rem;
     font-size: 0.95rem;
-    color: #59636e;
+    color: var(--text-secondary);
     flex-wrap: wrap;
 }
 
@@ -182,14 +184,18 @@
     container-type: inline-size;
     border: none;
     border-radius: 0.85rem;
-    background-color: #efefe6;
-    box-shadow: inset 0 0 0 1px rgba(31, 35, 40, 0.08);
-    color: #1f2328;
+    background-color: var(--tile-background);
+    box-shadow: inset 0 0 0 1px var(--border-subtle);
+    color: var(--text-primary);
     padding: 0.45rem;
     font-weight: 800;
     text-align: center;
     text-transform: uppercase;
-    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+    transition:
+        transform 120ms ease,
+        box-shadow 120ms ease,
+        background-color 120ms ease,
+        color 120ms ease;
 }
 
 .tile-label {
@@ -210,12 +216,12 @@
 
 .tile:hover:enabled {
     transform: translateY(-1px);
-    box-shadow: inset 0 0 0 1px rgba(31, 35, 40, 0.08), 0 0.5rem 1rem rgba(31, 35, 40, 0.08);
+    box-shadow: inset 0 0 0 1px var(--border-subtle), 0 0.5rem 1rem var(--shadow-color);
 }
 
 .tile.selected {
-    background-color: #1f2328;
-    color: #ffffff;
+    background-color: var(--tile-selected-background);
+    color: var(--tile-selected-text);
 }
 
 .controls {
@@ -231,17 +237,29 @@
     padding: 0.65rem 1.1rem;
     font-weight: 800;
     border: 1px solid transparent;
+    transition:
+        background-color 120ms ease,
+        border-color 120ms ease,
+        color 120ms ease,
+        box-shadow 120ms ease,
+        transform 120ms ease;
 }
 
 .primary-button {
-    background-color: #1f2328;
-    color: #ffffff;
+    background-color: var(--button-primary-background);
+    color: var(--button-primary-text);
 }
 
 .secondary-button {
-    background-color: #ffffff;
-    color: #1f2328;
-    border-color: #d0d7de;
+    background-color: var(--button-secondary-background);
+    color: var(--button-secondary-text);
+    border-color: var(--border-subtle);
+}
+
+.primary-button:hover:enabled,
+.secondary-button:hover:enabled {
+    transform: translateY(-1px);
+    box-shadow: 0 0.75rem 1.5rem -1rem var(--shadow-color);
 }
 
 button:disabled {
