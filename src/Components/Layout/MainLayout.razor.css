@@ -18,6 +18,27 @@
     backdrop-filter: blur(14px);
 }
 
+.top-row-items {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.build-indicator {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    background-color: var(--surface-background);
+    color: var(--text-secondary);
+    padding: 0.4rem 0.7rem;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.8rem;
+    line-height: 1;
+    box-shadow: 0 0.75rem 1.5rem -1rem var(--shadow-color);
+}
+
 .theme-toggle {
     display: inline-flex;
     align-items: center;
@@ -77,8 +98,17 @@ article {
         padding-top: 0.75rem;
     }
 
-    .theme-toggle {
+    .top-row-items {
         width: 100%;
+    }
+
+    .build-indicator,
+    .theme-toggle {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .build-indicator {
         justify-content: center;
     }
 }

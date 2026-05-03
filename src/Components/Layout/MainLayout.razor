@@ -4,17 +4,21 @@
 
 <div class="page">
     <header class="top-row">
-        <button
-            type="button"
-            class="theme-toggle"
-            aria-label="Dark mode"
-            aria-pressed="@_isDarkMode"
-            disabled="@(_themeModule is null)"
-            @onclick="ToggleThemeAsync">
-            <span class="theme-toggle-icon" aria-hidden="true">@(_isDarkMode ? "🌙" : "☀️")</span>
-            <span>Dark mode</span>
-            <span class="theme-toggle-state">@(_isDarkMode ? "On" : "Off")</span>
-        </button>
+        <div class="top-row-items">
+            <span class="build-indicator" title="@BuildDetails.CommitHash">Build @BuildDetails.ShortCommitHash</span>
+
+            <button
+                type="button"
+                class="theme-toggle"
+                aria-label="Dark mode"
+                aria-pressed="@_isDarkMode"
+                disabled="@(_themeModule is null)"
+                @onclick="ToggleThemeAsync">
+                <span class="theme-toggle-icon" aria-hidden="true">@(_isDarkMode ? "🌙" : "☀️")</span>
+                <span>Dark mode</span>
+                <span class="theme-toggle-state">@(_isDarkMode ? "On" : "Off")</span>
+            </button>
+        </div>
     </header>
 
     <main>
